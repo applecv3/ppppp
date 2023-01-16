@@ -1,23 +1,23 @@
-fun solution(n: Int): Int {
+fun solution(n: Int): Array<IntArray> {
+    val answer = arrayOf<IntArray>().toMutableList()
+    recursion(n, 1, 2, 3, answer)
+    return answer.toTypedArray()
+}
 
-    val cache: IntArray = intArrayOf(0, 1)
-
-    for(i in 2 .. n){
-        val nextValue: Int = (cache[0] + cache[1]) % 1234567
-        cache[0] = cache[1]
-        cache[1] = nextValue
+fun recursion(n: Int, a: Int, b: Int, c: Int, answer: MutableList<IntArray>) {
+    if(n == 1){
+        answer.add(intArrayOf(a, c))
+        return
     }
 
-    return cache[1]
+    recursion(n-1, a, c, b, answer)
+    answer.add(intArrayOf(a, c))
+    recursion(n-1, b, a, c, answer)
 }
 
 fun main(args: Array<String>) {
-    println( solution(3))
+    println( solution(2))
     println("-----")
-    println( solution(5))
-
-
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
+    
     println("Program arguments: ${args.joinToString()}")
 }
