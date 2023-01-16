@@ -1,23 +1,31 @@
-fun solution(n: Int): Array<IntArray> {
-    val answer = arrayOf<IntArray>().toMutableList()
-    recursion(n, 1, 2, 3, answer)
-    return answer.toTypedArray()
-}
+import java.lang.StringBuilder
 
-fun recursion(n: Int, a: Int, b: Int, c: Int, answer: MutableList<IntArray>) {
-    if(n == 1){
-        answer.add(intArrayOf(a, c))
-        return
+fun solution(s: String): String {
+    val answer = StringBuilder()
+
+    var firstLetter = s.first()
+    if(firstLetter.isLetter()){
+        firstLetter = firstLetter.uppercaseChar()
     }
 
-    recursion(n-1, a, c, b, answer)
-    answer.add(intArrayOf(a, c))
-    recursion(n-1, b, a, c, answer)
+    answer.append(firstLetter)
+
+    for(i in 1 until s.length){
+        var letter = s[i]
+        if(letter.isLetter()){
+            letter = if(s[i-1] == ' '){
+                letter.uppercaseChar()
+            } else {
+                letter.lowercaseChar()
+            }
+        }
+        answer.append(letter)
+    }
+
+    return answer.toString()
 }
 
 fun main(args: Array<String>) {
-    println( solution(2))
-    println("-----")
-
-    println("Program arguments: ${args.joinToString()}")
+    println( solution("3people unFollowed me"))
 }
+
