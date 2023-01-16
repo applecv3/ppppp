@@ -1,74 +1,37 @@
-import java.util.HashSet
+import java.util.ArrayList
 
-var answer = 0
-fun solution(n: Int): Int {
+fun solution(k: Int, tangerine: IntArray): Int {
+    val counter = HashMap<Int, Int>()
 
-    dfs(-1, HashSet<Int>(), HashSet<Int>(), HashSet<Int>(), n)
-
-    return answer
-}
-
-fun dfs(y: Int, X: HashSet<Int>, DL: HashSet<Int>, DR: HashSet<Int>, n: Int) {
-    if(y == n-1){
-        answer ++
-        return
+    for (value in tangerine){
+        counter[value]?.let { counter.put(value, it.plus(1)) } ?: run {counter.put(value, 1)}
     }
 
-    for(nx in 0 until n){
-        val ny = y + 1
+    val pairs: ArrayList<ArrayList<Int>> = ArrayList()
 
-        if(X.contains(nx) || DL.contains(ny-nx) || DR.contains(ny+nx)){
-            continue
+    for((key, value) in counter){
+        pairs.add(arrayListOf(key, value))
+    }
+
+    pairs.sortBy {it[1]}
+
+    var numToRemove = tangerine.size - k;
+    var removed = 0
+
+    for (i in tangerine.indices){
+        if(numToRemove >= pairs[i][1]){
+            numToRemove -= pairs[i][1]
+            removed ++
         }
-
-        val dl = ny - nx
-        val dr = ny + nx
-
-        X.add(nx)
-        DL.add(dl)
-        DR.add(dr)
-
-        dfs(ny, X, DL, DR, n)
-
-        X.remove(nx)
-        DL.remove(dl)
-        DR.remove(dr)
+        else {
+            break
+        }
     }
+
+    return pairs.size - removed
 }
 
 fun main(args: Array<String>) {
-    println( solution(4))
 
 }
 
-/*
-    for nx in range(n):
-
-        ny = y + 1
-
-        if nx in X or ny-nx in DL or ny+nx in DR:
-            continue
-
-        dl = ny-nx
-        dr = ny+nx
-
-        X.add(nx)
-        DL.add(dl)
-        DR.add(dr)
-
-        dfs(ny, X, DL, DR, config, n)
-
-        X.discard(nx)
-        DL.discard(dl)
-        DR.discard(dr)
-
-
-def solution(n):
-
-    config = Config()
-    X, DL, DR = set(), set(), set()
-
-    dfs(-1, X, DL, DR, config, n)
-
-    return config.answer
- */
