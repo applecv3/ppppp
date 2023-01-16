@@ -1,34 +1,20 @@
-import java.util.ArrayList
+import kotlin.math.*
 
-fun solution(k: Int, tangerine: IntArray): Int {
-    val counter = HashMap<Int, Int>()
+var answer = 0
+fun solution(k: Int, dungeons: Array<IntArray>): Int {
+    dfs(-1, dungeons, k, HashSet<Int>(), 0)
+    return answer
+}
 
-    for (value in tangerine){
-        counter[value]?.let { counter.put(value, it.plus(1)) } ?: run {counter.put(value, 1)}
-    }
-
-    val pairs: ArrayList<ArrayList<Int>> = ArrayList()
-
-    for((key, value) in counter){
-        pairs.add(arrayListOf(key, value))
-    }
-
-    pairs.sortBy {it[1]}
-
-    var numToRemove = tangerine.size - k;
-    var removed = 0
-
-    for (i in tangerine.indices){
-        if(numToRemove >= pairs[i][1]){
-            numToRemove -= pairs[i][1]
-            removed ++
-        }
-        else {
-            break
+fun dfs(idx: Int, dungeons: Array<IntArray>, k: Int, visited: HashSet<Int>, count: Int) {
+    answer = max(answer, count)
+    for(nextId in dungeons.indices){
+        if(!visited.contains(nextId) && k >= dungeons[nextId][0]){
+            visited.add(nextId)
+            dfs(nextId, dungeons, k - dungeons[nextId][1], visited, count+1)
+            visited.remove(nextId)
         }
     }
-
-    return pairs.size - removed
 }
 
 fun main(args: Array<String>) {
