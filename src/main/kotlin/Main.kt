@@ -1,4 +1,5 @@
 fun solution(n: Int): Int {
+
     val cache: IntArray = intArrayOf(0, 1)
 
     for(i in 2 .. n){
