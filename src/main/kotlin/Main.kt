@@ -18,6 +18,6 @@ fun recursion(n: Int, a: Int, b: Int, c: Int, answer: MutableList<IntArray>) {
 fun main(args: Array<String>) {
     println( solution(2))
     println("-----")
-    
+
     println("Program arguments: ${args.joinToString()}")
 }
